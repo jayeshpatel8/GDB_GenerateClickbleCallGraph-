@@ -1,5 +1,5 @@
 # gen_graph.py
-
+![alt text](https://github.com/jayeshpatel8/GDB_GenerateClickbleCallGraph-/blob/master/CallGraph.png?raw=true)
 ## How to Use:
     Interactive Execution Call Graphs:
       - Click on a node and entire parent and child chain is highlighted with different colors
