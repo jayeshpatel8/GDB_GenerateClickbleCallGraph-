@@ -35,8 +35,8 @@ There are two parts to the whole process:
 
 ## Part I: Get data from GDB
 
-### Enable debugging symbols    
-    $ test -g test.cpp
+### Enable debugging symbols: Use -g -fno-inline -fno-default-inline
+    $ g++ test.cpp -g -fno-inline -fno-default-inline
 
 ### Now, the GDB part
 #### start binary under GDB     
@@ -48,7 +48,7 @@ There are two parts to the whole process:
 
     (gdb) rbreak test.c:.
     Breakpoint 1 at 0x40058f: file test.cpp, line 12.
-    void func1(void);
+    
 
 
 #### Enable logging
@@ -74,16 +74,14 @@ There are two parts to the whole process:
 
 #### Once the program finishes, it would have dumped the logs to the disk in test.log    
 
-    $ cat test.log
+    $ cat gdb.txt
     
-    Breakpoint 9, main () at test.cpp:15
-    15              func1();
-    #0  main () at he.c:15
-
-    Breakpoint 1, func1 () at test.cpp:12
-    12      void func1(void) { func2(); }
-    #0  func1 () at he.c:12
-    #1  0x00000000004005a0 in main () at he.c:15
+    Thread 1 "a" hit Breakpoint 3, test::function2 (this=0x80003a9d0, i=1) at test.cpp:24
+    24	  return test::function1 (i) + 1;
+    #0  test::function2 (this=0x80003a9d0, i=1) at test.cpp:24
+    #1  0x000000010040115e in test::function3 (this=0x80003a9d0, c=1 '\001') at test.cpp:42
+    #2  0x00000001004011a8 in main () at test.cpp:50
+    Continuing.
 
 ## Part II: run gen_graph.py on collected data
 
@@ -103,16 +101,16 @@ There are two parts to the whole process:
     python3 ./gen_graphs.py  <gdb_backtrace_logs>
     
 
-    $ python3 gen_graphs.py test.log
+    $ python3 gen_graphs.py gdb.txt
     [1] parsing gdb logs..
     [2] adding nodes..
             # of nodes: 10
     [3] adding edges..
             # of edges: 9
     [4] saving graph to:
-            /home/vagrant/gdb_graphs/test.svg
+            gdb.svg
 
-Open the svg file in a browser
+Open the svg file in a Firefox browser
 
 
 
